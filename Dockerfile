@@ -32,6 +32,7 @@ RUN apt-get update && apt-get full-upgrade -y && \
     rm -rf /var/lib/apt/lists/*
 
 RUN echo "deb [signed-by=/etc/apt/keyrings/llvm-snapshot.gpg.key] http://apt.llvm.org/focal/ llvm-toolchain-focal-${LLVM_VERSION} main" > /etc/apt/sources.list.d/llvm.list && \
+    mkdir /etc/apt/keyrings && \
     wget -qO /etc/apt/keyrings/llvm-snapshot.gpg.key https://apt.llvm.org/llvm-snapshot.gpg.key
 
 RUN apt-get update && \
