@@ -37,7 +37,7 @@ RUN apt-get update && \
     apt-get -y install --no-install-recommends \
     # Added for Open5GS support
     python3-pip python3-wheel \
-    build-essential mongodb curl \
+    build-essential mongodb curl tmux \
     libsctp-dev libgnutls28-dev libgcrypt-dev \
     libssl-dev libidn11-dev libmongoc-dev \
     libbson-dev libyaml-dev \
