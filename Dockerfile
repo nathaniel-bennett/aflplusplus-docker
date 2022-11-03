@@ -5,9 +5,7 @@
 # GCC 11 is used instead of 12 because genhtml for afl-cov doesn't like it.
 #
 
-FROM ubuntu:22.04 AS aflplusplus
-LABEL "maintainer"="afl++ team <afl@aflplus.plus>"
-LABEL "about"="AFLplusplus container image"
+FROM ubuntu:22.04
 
 ### Comment out to enable these features
 # Only available on specific ARM64 boards
@@ -37,6 +35,15 @@ RUN echo "deb [signed-by=/etc/apt/keyrings/llvm-snapshot.gpg.key] http://apt.llv
 
 RUN apt-get update && \
     apt-get -y install --no-install-recommends \
+    # Added for Open5GS support
+    python3-pip python3-wheel \
+    build-essential mongodb curl \
+    libsctp-dev libgnutls28-dev libgcrypt-dev \
+    libssl-dev libidn11-dev libmongoc-dev \
+    libbson-dev libyaml-dev \
+    libmicrohttpd-dev libcurl4-gnutls-dev libnghttp2-dev \
+    libtins-dev libtalloc-dev \
+    # (end of Open5GS additions)
     make cmake automake meson ninja-build bison flex \
     git xz-utils bzip2 wget jupp nano bash-completion less vim joe ssh psmisc \
     python3 python3-dev python3-setuptools python-is-python3 \
@@ -93,3 +100,26 @@ RUN echo "set encoding=utf-8" > /root/.vimrc && \
     echo ". /etc/bash_completion" >> ~/.bashrc && \
     echo 'alias joe="joe --wordwrap --joe_state -nobackup"' >> ~/.bashrc && \
     echo "export PS1='"'[afl++ \h] \w$(__git_ps1) \$ '"'" >> ~/.bashrc
+
+
+# Beginning of Open5GS-specific run commands
+
+WORKDIR /
+
+# Get nodejs and install (commented out for now--remove altogether?)
+# RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs
+
+# Get open5gs (our pre-instrumented version) and install
+RUN git clone --recursive https://github.com/nathaniel-bennett/open5gs && cd open5gs && \
+    git checkout main && meson build --prefix=`pwd`/install && \
+    ninja -C build && cd build && ninja install && \
+    mkdir -p /open5gs/install/include && \
+    cd .. && ./fuzzing_configs.sh
+
+# Building WebUI of open5gs (commented out for now--remove altogether?)
+# RUN cd open5gs/webui && npm ci --no-optional
+
+# Start up fuzzer and all of its bits in a termux!
+# TODO: add actual command here
+
+# End of Open5GS-specific run commands
