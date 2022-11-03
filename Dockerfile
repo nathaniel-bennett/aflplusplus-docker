@@ -5,7 +5,8 @@
 # GCC 11 is used instead of 12 because genhtml for afl-cov doesn't like it.
 #
 
-FROM ubuntu:22.04
+# changed to focal for compatibility with open5gs docker build
+FROM ubuntu:focal
 
 ### Comment out to enable these features
 # Only available on specific ARM64 boards
@@ -16,8 +17,8 @@ ENV NO_NYX=1
 ### Only change these if you know what you are doing:
 # LLVM 15 does not look good so we stay at 14 to still have LTO
 ENV LLVM_VERSION=14
-# GCC 12 is producing compile errors for some targets so we stay at GCC 11
-ENV GCC_VERSION=11
+# GCC 12 is producing compile errors for some targets so we stay at GCC 11 (10 for focal)
+ENV GCC_VERSION=10
 
 ### No changes beyond the point unless you know what you are doing :)
 
@@ -30,7 +31,7 @@ RUN apt-get update && apt-get full-upgrade -y && \
     apt-get install -y --no-install-recommends wget ca-certificates apt-utils && \
     rm -rf /var/lib/apt/lists/*
 
-RUN echo "deb [signed-by=/etc/apt/keyrings/llvm-snapshot.gpg.key] http://apt.llvm.org/jammy/ llvm-toolchain-jammy-${LLVM_VERSION} main" > /etc/apt/sources.list.d/llvm.list && \
+RUN echo "deb [signed-by=/etc/apt/keyrings/llvm-snapshot.gpg.key] http://apt.llvm.org/focal/ llvm-toolchain-focal-${LLVM_VERSION} main" > /etc/apt/sources.list.d/llvm.list && \
     wget -qO /etc/apt/keyrings/llvm-snapshot.gpg.key https://apt.llvm.org/llvm-snapshot.gpg.key
 
 RUN apt-get update && \
