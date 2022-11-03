@@ -111,6 +111,9 @@ WORKDIR /
 # Get nodejs and install (commented out for now--remove altogether?)
 # RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs
 
+ARG CC=afl-gcc-fast
+ARG CXX=afl-g++-fast
+
 # Get open5gs (our pre-instrumented version) and install
 RUN git clone --recursive https://github.com/nathaniel-bennett/open5gs && cd open5gs && \
     git checkout main && meson build --prefix=`pwd`/install && \
