@@ -121,7 +121,7 @@ RUN git clone --recursive https://github.com/nathaniel-bennett/open5gs && cd ope
     mkdir -p /open5gs/install/include
 
 WORKDIR /open5gs
-RUN ./fuzzing_configs.sh
+RUN bash ./fuzzing_configs.sh
 
 # Building WebUI of open5gs (commented out for now--remove altogether?)
 # RUN cd open5gs/webui && npm ci --no-optional
