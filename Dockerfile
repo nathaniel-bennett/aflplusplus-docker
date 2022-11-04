@@ -121,12 +121,20 @@ RUN git clone --recursive https://github.com/nathaniel-bennett/open5gs && cd ope
     mkdir -p /open5gs/install/include
 
 WORKDIR /open5gs
-RUN bash ./fuzzing_configs.sh
-
-# Building WebUI of open5gs (commented out for now--remove altogether?)
-# RUN cd open5gs/webui && npm ci --no-optional
-
-# Start up fuzzer and all of its bits in a termux!
-# TODO: add actual command here
+RUN bash ./fuzzing_configs.sh && mkdir /fuzz-seeds && \
+    apt-get install coreutils && \
+    echo 'ABEALQAABAA7AAgAAPEQAAAZsAA8QAoDgHNyc2VuYjAxAEAABwAAAcAA8RAAiUABQA==' | base64 -d > /fuzz-seeds/2.testcase && \
+    echo 'AAxAXwAABgAIAAIAAQAaAC0sF2u/S1EXB0EBC/YA8RAAAgHyAEZTB+BgAAAAABAABQIB0BHRkeBvBOAAYAAAQwAGAADxEAAHAGRACAAA8RAAGbAQAIZAAUAAYAAGAEDyAEZT' | base64 -d > /fuzz-seeds/3.testcase && \
+    echo 'AA1APgAABQAAAAIAEQAIAAIAAQAaABUUJxO0PzEYAgHaKAkIaW50ZXJuZXQAZEAIAADxEAAZsBAAQ0AGAADxEAAH' | base64 -d > /fuzz-seeds/4.testcase && \
+    echo 'ABZAPwAAAwAAAAIAEQAIAAIAAQBKQCwrAUgBAm3YAAAYAA8wIIAAAQAKBACiAEJQAMAKoABACKSAABAAAIJQUABN' | base64 -d > /fuzz-seeds/5.testcase && \
+    echo 'IAkAIgAAAwAAQAIAEQAIQAIAAQAzQA8AADJACgofwKh6EgAAAAE=' | base64 -d > /fuzz-seeds/6.testcase && \
+    echo 'AA1ANwAABQAAAAIAEQAIAAIAAQAaAA4NJycCh40ZB0MAA1IAwgBkQAgAAPEQABmwEABDQAYAAPEQAAc=' | base64 -d > /fuzz-seeds/7.testcase && \
+    echo 'ABJAFQAAAwAAAAIAEQAIAAIAAQACQAICgA==' | base64 -d > /fuzz-seeds/8.testcase && \
+    echo 'IBcADwAAAgAAQAIAEQAIQAIAAQ==' | base64 -d > /fuzz-seeds/9.testcase && \
+    echo 'AAxANwAABgAIAAIAAgAaAAUExxrKiQBDAAYAAPEQAAcAZEAIAADxEAAZsBAAhkABQABgAAYAQPIARlM=' | base64 -d > /fuzz-seeds/10.testcase && \
+    echo 'ABZAPwAAAwAAAAIAEgAIAAIAAgBKQCwrAUgBAm3YAAAYAA8wIIAAAQAKBACiAEJQAMAKoABACKSAABAAAIJQUABNAA==' | base64 -d > /fuzz-seeds/11.testcase && \
+    echo 'IAkAIgAAAwAAQAIAEgAIQAIAAgAzQA8AADJACgofwKh6EgAAAAI=' | base64 -d > /fuzz-seeds/12.testcase && \
+    echo 'AA1APwAABQAAAAIAEgAIAAIAAgAaABYVFx9zcd8bB0UJC/YA8RAAAgHyAEZTAGRACAAA8RAAGbAQAENABgAA8RAABw==' | base64 -d > /fuzz-seeds/13.testcase && \
+    echo 'IBcADwAAAgAAQAIAEgAIQAIAAg==' | base64 -d > /fuzz-seeds/14.testcase
 
 # End of Open5GS-specific run commands
