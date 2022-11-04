@@ -118,8 +118,10 @@ ARG CXX=afl-g++-fast
 RUN git clone --recursive https://github.com/nathaniel-bennett/open5gs && cd open5gs && \
     git checkout main && meson build --prefix=`pwd`/install && \
     ninja -C build && cd build && ninja install && \
-    mkdir -p /open5gs/install/include && \
-    cd .. && ./fuzzing_configs.sh
+    mkdir -p /open5gs/install/include
+
+WORKDIR /open5gs
+RUN ./fuzzing_configs.sh
 
 # Building WebUI of open5gs (commented out for now--remove altogether?)
 # RUN cd open5gs/webui && npm ci --no-optional
